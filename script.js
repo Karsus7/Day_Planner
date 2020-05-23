@@ -3,23 +3,28 @@ $(document).ready(function () {
     // the "$" character allows the selector to find and effect HTML elements.
     // listen for save button clicks to activate function
     $(".saveBtn").on("click", function () {
-        // get nearby values
-        var value = $(this).siblings(".description").val();
+        // .siblings and .parent sets DOM elements as html elements
         var time = $(this).parent().attr("id");
+        var value = $(this).siblings(".description").val();
+
 
         // save written description and current time in localStorage
         localStorage.setItem(time, value);
     });
 
+// All time related script relies in some part on the use of 'moment'
     function hourUpdater() {
         // get current number of hours
         var currentHour = moment().hours();
 
         // loop over time blocks
         $(".time-block").each(function () {
+// blockHour is how the function compares an hour to the currentHour from moment
             var blockHour = parseInt($(this).attr("id").split("-")[1]);
 
-            // check if we've moved past this time
+// check if we've moved past this time
+// 'remove' and add'' class in this case effect the green/red shading based on current time
+// 'past', 'present', and 'future', are style id's, and effect coloration of the rows
             if (blockHour < currentHour) {
                 $(this).addClass("past");
             }
@@ -52,5 +57,6 @@ $(document).ready(function () {
     $("#hour-17 .description").val(localStorage.getItem("hour-17"));
 
     // display current day at the top of the page
+    // Study up on moment at: https://devhints.io/moment
     $("#currentDay").text(moment().format("dddd, MMMM Do"));
 });
